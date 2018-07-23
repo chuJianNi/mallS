@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="/static/pic/favicon.ico">
+
+		<title>商城</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<link href="/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="/static/css/dashboard.css" rel="stylesheet">
+
+		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+		<script src="/assets/js/ie-emulation-modes-warning.js"></script>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+			<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<!--datatables  CSS -->
+		<link href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">商城管理</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">设置</a></li>
+						<li><a href="#">帮助</a></li>
+					</ul>
+					<form class="navbar-form navbar-right">
+						<input type="text" class="form-control" placeholder="查询...">
+					</form>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li class="active"><a href="/index/index/index">用户管理 <span class="sr-only">(current)</span></a></li>
+					</ul>
+					<ul class="nav nav-sidebar">
+						<li><a href="/index/index/goods">商品管理</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+						添加新用户
+					</button>
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">添加用户</h4>
+								</div>
+								<div class="modal-body">
+									<form class="form-horizontal" id="addForm" method="post">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">账号</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="inputAccount" name="inputAccount" placeholder="账号" required>
+											</div>
+											<label class="col-sm-1 control-label">
+												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="该账号被占用"></span>
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="inputUsername" class="col-sm-2 control-label">用户名</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="inputUsername" name="inputUsername" placeholder="用户名" required>
+											</div>
+											<label class="col-sm-1 control-label">
+												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="该用户名被占用"></span>
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="inputPassword" class="col-sm-2 control-label">密码</label>
+											<div class="col-sm-9">
+												<input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="密码" required>
+											</div>
+											<label class="col-sm-1 control-label">
+												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码长度不足6位"></span>
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="inputConfirmPas" class="col-sm-2 control-label">确认密码</label>
+											<div class="col-sm-9">
+												<input type="password" class="form-control" id="inputConfirmPas" name="inputConfirmPas" placeholder="密码" required>
+											</div>
+											<label class="col-sm-1 control-label">
+												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码不一致"></span>
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="" class="col-sm-2 control-label">用户状态</label>
+											<div class="col-sm-10">
+												<div class="radio">
+													<label>
+														<input type="radio" name="optionsRadios" value="1" checked> 启用
+													</label>
+													<label>
+														<input type="radio" name="optionsRadios" value="2"> 禁用
+													</label>
+												</div>
+											</div>
+										</div>
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="submit" class="btn btn-primary">保存</button>
+								</div>
+									</form>
+							</div>
+						</div>
+					</div>
+
+					<br />
+					<div class="table-responsive">
+						<table id="myTable" class="table table-striped">
+							<thead>
+								<tr>
+									<th>id</th>
+									<th>账号</th>
+									<th>用户名</th>
+									<th>状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>	
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+	  ================================================== -->
+	  <!-- Placed at the end of the document so the pages load faster -->
+	  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	  <script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery.min.js"><\/script>')</script>
+	  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+	  <script src="/assets/js/vendor/holder.min.js"></script>
+	  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	  <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
+	  <!-- datatables js -->
+	  <script src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+
+	  <script>
+		  $('#addForm').submit(function(envent){
+			  envent.preventDefault();
+			  var userid=$('#inputAccount').val();
+			  var username=$('#inputUsername').val();
+			  var password=$('#inputPassword').val();
+			  var valid=$("input:radio:checked").val();
+			  userid = $.trim(userid);
+			  username = $.trim(username);
+			  password = $.trim(password);
+			  if(userid == "" || username =="" || password == ""){
+				BootstrapDialog.alert({
+					type:BootstrapDialog.TYPE_DANGER,
+					title:'提示',
+					message:'不允许输入空格字符串',
+					closeable:true,
+					buttonLabel:'确定'
+				});
+				  return;
+			  }
+			  if($('#inputPassword').val() != $('#inputConfirmPas').val() || $('#inputPassword').val().length<5){
+				BootstrapDialog.alert({
+					type:BootstrapDialog.TYPE_DANGER,
+					title:'提示',
+					message:'不密码不一致,或密码长度不足6位',
+					closeable:true,
+					buttonLabel:'确定'
+				});
+				  return;
+			  }
+			  $.ajax({
+				  url:'/index/index/adduser',
+				  type:'post',
+				  dataType:'json',
+				  data:{'inputAccount':userid,'inputUsername':username,'inputPassword':password,'optionsRadios':valid},
+				  beforeSend:function(){
+				  },
+				  error:function(){
+					BootstrapDialog.alert({
+						type:BootstrapDialog.TYPE_DANGER,
+						title:'提示',
+						message:'error',
+						closeable:true,
+						buttonLabel:'确定'
+					});
+				  },
+				  complete:function(){
+					  //alert('complete');
+				  },
+				  success:function(data){
+					BootstrapDialog.alert({
+						type:BootstrapDialog.TYPE_SUCCESS,
+						title:'提示',
+						message:data.info,
+						closeable:true,
+						buttonLabel:'确定'
+					});
+					  table.ajax.reload();
+				  }
+			  });
+		  });
+
+		$('#inputPassword').change(function(){
+			if($('#inputPassword').val().length<5){
+				$('#inputPassword').parent().next().children('.glyphicon-ok').addClass('hidden');
+				$('#inputPassword').parent().next().children('.glyphicon-remove').removeClass('hidden');
+			}else{
+				$('#inputPassword').parent().next().children('.glyphicon-ok').removeClass('hidden');
+				$('#inputPassword').parent().next().children('.glyphicon-remove').addClass('hidden');
+			}
+
+		});
+		$('#inputConfirmPas').change(function(){
+			if($('#inputConfirmPas').val().length<5 || $('#inputPassword').val() != $('#inputConfirmPas').val()){
+				$('#inputConfirmPas').parent().next().children('.glyphicon-ok').addClass('hidden');
+				$('#inputConfirmPas').parent().next().children('.glyphicon-remove').removeClass('hidden');
+			}else{
+				$('#inputConfirmPas').parent().next().children('.glyphicon-ok').removeClass('hidden');
+				$('#inputConfirmPas').parent().next().children('.glyphicon-remove').addClass('hidden');
+			}
+
+		});
+
+
+		$('#inputUsername').change(function(){
+			$.post('/index/index/checkUsername',{"user_name":$('#inputUsername').val()},function(data){
+				if(data.info == "have"){
+					$('#inputUsername').parent().next().children('.glyphicon-ok').addClass('hidden');
+					$('#inputUsername').parent().next().children('.glyphicon-remove').removeClass('hidden');
+				}else if($.trim($('#inputUsername').val()) != ""){
+					$('#inputUsername').parent().next().children('.glyphicon-remove').addClass('hidden');
+					$('#inputUsername').parent().next().children('.glyphicon-ok').removeClass('hidden');
+				}
+			},'json');
+		});
+
+		$('#inputAccount').change(function(){
+			$.post('/index/index/checkUserid',{"user_id":$('#inputAccount').val()},function(data){
+				if(data.info == "have"){
+					$('#inputAccount').parent().next().children('.glyphicon-ok').addClass('hidden');
+					$('#inputAccount').parent().next().children('.glyphicon-remove').removeClass('hidden');
+				}else if($.trim($('#inputAccount').val()) != ""){
+					$('#inputAccount').parent().next().children('.glyphicon-remove').addClass('hidden');
+					$('#inputAccount').parent().next().children('.glyphicon-ok').removeClass('hidden');
+				}
+			},'json');
+		});
+
+		$('body').on('hidden.bs.modal','.modal',function(){
+			$('#inputAccount').val("");
+			$('#inputUsername').val("");
+			$('#inputPassword').val("");
+			$('#inputConfirmPas').val("");
+			$("input[name='optionsRadios']:eq(0)").prop("checked","checked");
+			$('.glyphicon').addClass('hidden');
+//	   		console.log("before:"+$(this).data("bs.modal"));
+//	   		console.log($(this).data("bs.modal"));
+//	   		
+//	   		$(this).removeData("bs.modal");
+//	   		console.log("after:"+$(this).data("bs.modal"));
+
+		});
+
+		var table;
+
+		$(document).ready(function(){
+			table=$('#myTable').DataTable({
+				"language":{
+					"search":"搜索",
+					"info":"显示 _START_ 到 _END_ 行，共 _TOTAL_ 行。",
+					"lengthMenu":"显示 _MENU_ 条记录",
+					"paginate":{
+						"previous":"上一页",
+						"next":"下一页"
+					}
+				},
+				"columns":[
+					{"data":"id"},
+					{"data":"user_id"},
+					{"data":"user_name"},
+					{
+						"data":"valid",
+						"render":function(data,type,row,meta){
+	   						if(data == 1){
+							   return '<span class="label label-success">启用</span>';
+								  }else{
+							   return '<span class="label label-danger">禁用</span>';
+								  }
+	   					}
+					},
+					{
+						"data":"",
+						"render":function(data,type,row,meta){
+							 return '<span role="button" class="label label-default" onclick="del('+row.id+')">删除</span>';
+	   					}
+					}
+					],
+				"columnDefs":[
+					{"searchable":false,"targets":[0,3,4]},
+					{"visible":false,"targets":[0]}
+					],
+				"ajax":{
+					"type":"post",
+					"dataType":"json",
+					"contentType":"application/json",
+					"url":"/index/index/getuser"
+					
+				}
+			});
+		});
+
+		function del(id){
+			BootstrapDialog.show({
+				type:BootstrapDialog.TYPE_WARNING,
+				title:'提示',
+				message:'是否确认删除该用户？',
+				buttons:[{
+					id:'btn-ok',
+				//	icon:'glyphicon glyphicon-check',
+					label:'确定',
+					cssClass:'btn-default',
+					autospin:false,
+					action:function(dialogRef){
+						$.post('/index/index/deluser',{'user_id':id},function(data){
+							if(data.info =="done"){
+								BootstrapDialog.alert({
+									type:BootstrapDialog.TYPE_SUCCESS,
+									title:'提示',
+									message:'删除成功。',
+									closeable:true,
+									buttonLabel:'确定'
+								});
+								dialogRef.close();
+								table.ajax.reload();
+							}else{
+								BootstrapDialog.alert({
+									type:BootstrapDialog.TYPE_DANGER,
+									title:'提示',
+									message:'删除失败。',
+									closeable:true,
+									buttonLabel:'确定'
+								});
+								dialogRef.close();
+								table.ajax.reload();
+							}
+						},'json');
+					}
+				}]
+			});
+		}
+	  </script>
+	</body>
+</html>
