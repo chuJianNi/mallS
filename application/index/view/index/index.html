@@ -32,7 +32,14 @@
 		<!--datatables  CSS -->
 		<link href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet">
-
+		<style>
+			.glyphicon-ok{
+				color:green;
+			}
+			.glyphicon-remove{
+				color:red;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -73,14 +80,14 @@
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
 						添加新用户
 					</button>
 					<!-- Modal -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header bg-info">
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 									<h4 class="modal-title" id="myModalLabel">添加用户</h4>
 								</div>
@@ -113,7 +120,7 @@
 											</div>
 											<label class="col-sm-1 control-label">
 												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
-												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码长度不足6位"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码长度不足6位,或包含空格"></span>
 											</label>
 										</div>
 										<div class="form-group">
@@ -124,6 +131,16 @@
 											<label class="col-sm-1 control-label">
 												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
 												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码不一致"></span>
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="inputMark" class="col-sm-2 control-label">备注</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="inputMark" name="inputMark" placeholder="备注" >
+											</div>
+											<label class="col-sm-1 control-label">
+												<span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="备注信息"></span>
 											</label>
 										</div>
 										<div class="form-group">
@@ -151,13 +168,15 @@
 					</div>
 
 					<br />
+					<div class="row-fluid"><br /> </div>
 					<div class="table-responsive">
-						<table id="myTable" class="table table-striped">
+						<table id="myTable" class="table table-striped table-hover">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th>id</th>
 									<th>账号</th>
 									<th>用户名</th>
+									<th>备注</th>
 									<th>状态</th>
 									<th>操作</th>
 								</tr>
@@ -190,10 +209,11 @@
 			  var userid=$('#inputAccount').val();
 			  var username=$('#inputUsername').val();
 			  var password=$('#inputPassword').val();
-			  var valid=$("input:radio:checked").val();
+			  var valid=$("input[name='optionsRadios']:checked").val();
+			  var markinfo=$('#inputMark').val();
 			  userid = $.trim(userid);
 			  username = $.trim(username);
-			  password = $.trim(password);
+			  //password = $.trim(password);
 			  if(userid == "" || username =="" || password == ""){
 				BootstrapDialog.alert({
 					type:BootstrapDialog.TYPE_DANGER,
@@ -204,7 +224,7 @@
 				});
 				  return;
 			  }
-			  if($('#inputPassword').val() != $('#inputConfirmPas').val() || $('#inputPassword').val().length<5){
+			  if($('#inputPassword').val() != $('#inputConfirmPas').val() || $('#inputPassword').val().length<6){
 				BootstrapDialog.alert({
 					type:BootstrapDialog.TYPE_DANGER,
 					title:'提示',
@@ -218,7 +238,7 @@
 				  url:'/index/index/adduser',
 				  type:'post',
 				  dataType:'json',
-				  data:{'inputAccount':userid,'inputUsername':username,'inputPassword':password,'optionsRadios':valid},
+				  data:{'inputAccount':userid,'inputUsername':username,'inputPassword':password,'inputMark':markinfo,'optionsRadios':valid},
 				  beforeSend:function(){
 				  },
 				  error:function(){
@@ -241,13 +261,14 @@
 						closeable:true,
 						buttonLabel:'确定'
 					});
+					  $('#myModal').modal('hide');
 					  table.ajax.reload();
 				  }
 			  });
 		  });
 
 		$('#inputPassword').change(function(){
-			if($('#inputPassword').val().length<5){
+			if($('#inputPassword').val().length<6){
 				$('#inputPassword').parent().next().children('.glyphicon-ok').addClass('hidden');
 				$('#inputPassword').parent().next().children('.glyphicon-remove').removeClass('hidden');
 			}else{
@@ -257,7 +278,7 @@
 
 		});
 		$('#inputConfirmPas').change(function(){
-			if($('#inputConfirmPas').val().length<5 || $('#inputPassword').val() != $('#inputConfirmPas').val()){
+			if($('#inputConfirmPas').val().length<6 || $('#inputPassword').val() != $('#inputConfirmPas').val()){
 				$('#inputConfirmPas').parent().next().children('.glyphicon-ok').addClass('hidden');
 				$('#inputConfirmPas').parent().next().children('.glyphicon-remove').removeClass('hidden');
 			}else{
@@ -297,6 +318,7 @@
 			$('#inputUsername').val("");
 			$('#inputPassword').val("");
 			$('#inputConfirmPas').val("");
+			$('#inputMark').val("");
 			$("input[name='optionsRadios']:eq(0)").prop("checked","checked");
 			$('.glyphicon').addClass('hidden');
 //	   		console.log("before:"+$(this).data("bs.modal"));
@@ -320,10 +342,12 @@
 						"next":"下一页"
 					}
 				},
+				"autoWidth":false,
 				"columns":[
 					{"data":"id"},
 					{"data":"user_id"},
 					{"data":"user_name"},
+					{"data":"mark"},
 					{
 						"data":"valid",
 						"render":function(data,type,row,meta){
@@ -337,13 +361,18 @@
 					{
 						"data":"",
 						"render":function(data,type,row,meta){
-							 return '<span role="button" class="label label-default" onclick="del('+row.id+')">删除</span>';
+							var contents;
+							 contents='<span role="button" class="label label-default" onclick="del('+row.id+')">删除</span>';
+							 contents+='  <span role="button" class="label label-warning" onclick="modify('+row.id+')">修改</span>';
+							 contents+='  <span role="button" class="label label-danger" onclick="modifyPas('+row.id+',\''+row.user_id+'\',\''+row.user_name+'\')">修改密码</span>';
+							return contents;
 	   					}
 					}
 					],
 				"columnDefs":[
 					{"searchable":false,"targets":[0,3,4]},
-					{"visible":false,"targets":[0]}
+					{"visible":false,"targets":[0]},
+					{"width":"200px","targets":[5]}
 					],
 				"ajax":{
 					"type":"post",
@@ -361,10 +390,10 @@
 				title:'提示',
 				message:'是否确认删除该用户？',
 				buttons:[{
-					id:'btn-ok',
+					id:'btn-ok-d',
 				//	icon:'glyphicon glyphicon-check',
 					label:'确定',
-					cssClass:'btn-default',
+					cssClass:'btn-warning',
 					autospin:false,
 					action:function(dialogRef){
 						$.post('/index/index/deluser',{'user_id':id},function(data){
@@ -394,6 +423,182 @@
 				}]
 			});
 		}
+
+		function modify(id){
+			BootstrapDialog.show({
+				type:BootstrapDialog.TYPE_WARNING,
+				title:'提示',
+				message:'是否修改该用户信息？',
+				buttons:[{
+					id:'btn-ok-m',
+				//	icon:'glyphicon glyphicon-check',
+					label:'确定',
+					cssClass:'btn-warning',
+					autospin:false,
+					action:function(dialogRef){
+						dialogRef.close();
+						$.post('/index/index/userinfo',{"id":id},function(data){
+							var radios=' <div class="form-group"> <label for="" class="col-sm-2 control-label">用户状态</label> <div class="col-sm-10"> <div class="radio"> <label> <input type="radio" name="optionsRadiosM" value="1" checked> 启用 </label> <label> <input type="radio" name="optionsRadiosM" value="2"> 禁用 </label> </div> </div> </div>';
+							if(data.valid =="2"){
+								radios=' <div class="form-group"> <label for="" class="col-sm-2 control-label">用户状态</label> <div class="col-sm-10"> <div class="radio"> <label> <input type="radio" name="optionsRadiosM" value="1" > 启用 </label> <label> <input type="radio" name="optionsRadiosM" value="2" checked> 禁用 </label> </div> </div> </div>';
+							}
+							var mark=' <div class="form-group"><label for="inputMarkM" class="col-sm-2 control-label">备注信息</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputMarkM" name="inputMarkM" value="" placeholder="备注"> </div> <label class="col-sm-1 control-label">   </label> </div> '
+							if(data.mark != null){
+								mark=' <div class="form-group"><label for="inputMarkM" class="col-sm-2 control-label">备注信息</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputMarkM" name="inputMarkM" value="'+data.mark+'" placeholder="备注"> </div> <label class="col-sm-1 control-label">   </label> </div> '
+							}
+							BootstrapDialog.show({
+								type:BootstrapDialog.TYPE_INFO,
+								title:'信息修改',
+								message:
+								'<form class="form-horizontal" id="modifyForm" method="post"> <div class="form-group"> <label for="inputAccountM" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputAccountM" name="inputAccountM" value="'+data.user_id+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputUsernameM" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputUsernameM" name="inputUsernameM" value="'+data.user_name+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div>'+mark+radios+' </form>',
+
+								buttons:[{
+									label:'确定',
+									cssClass:'btn-info',
+									autospin:false,
+									action:function(dialogRef){
+										$.post('/index/index/edituser',{"id":id,"inputMarkM":$('#inputMarkM').val(),"optionsRadiosM":$("input[name='optionsRadiosM']:checked").val()},function(data){
+											if(data.info =="done"){
+												BootstrapDialog.alert({
+													type:BootstrapDialog.TYPE_SUCCESS,
+													title:'提示',
+													message:'修改成功。',
+													closeable:true,
+													buttonLabel:'确定'
+												});
+												dialogRef.close();
+												table.ajax.reload();
+											}else{
+												BootstrapDialog.alert({
+													type:BootstrapDialog.TYPE_DANGER,
+													title:'提示',
+													message:'修改失败。',
+													closeable:true,
+													buttonLabel:'确定'
+												});
+												dialogRef.close();
+												table.ajax.reload();
+											}
+										},'json');
+									}
+								}]
+							});
+						},'json');
+					}
+				}]
+			});
+		}
+
+		function modifyPas(id,userid,username){
+			BootstrapDialog.show({
+				type:BootstrapDialog.TYPE_WARNING,
+				title:'提示',
+				message:'是否修改该用户密码？',
+				buttons:[{
+				//	icon:'glyphicon glyphicon-check',
+					label:'确定',
+					cssClass:'btn-warning',
+					autospin:false,
+					action:function(dialogRef){
+						dialogRef.close();
+						BootstrapDialog.show({
+							type:BootstrapDialog.TYPE_INFO,
+							title:'密码修改',
+							message:'<form class="form-horizontal"  method="post"> <div class="form-group"> <label for="" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+userid+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+username+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputPasswordOld" class="col-sm-2 control-label">旧密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordOld" name="inputPasswordOld" value="" placeholder="旧密码" onchange="changeOldPas('+id+')" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码不正确"></span> </label> </div> <div class="form-group"> <label for="inputPasswordNew" class="col-sm-2 control-label">新密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordNew" name="inputPasswordNew" value="" placeholder="新密码" onchange="changeNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="密码不足6位,或密码包含空格"></span> </label> </div> <div class="form-group"> <label for="inputPasswordConfirmNew" class="col-sm-2 control-label">确认密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordConfirmNew" name="inputPasswordConfirmNew" value="" placeholder="确认密码" onchange="changeConfirmNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove hidden" aria-hidden="true" title="与上次密码输入不一致"></span> </label> </div></form>', 
+							buttons:[{
+								label:'确定',
+								cssClass:'btn-info',
+								autospin:false,
+								action:function(dialogRef){
+
+									$.post('/index/index/checkPas',{"id":id,"pas":$('#inputPasswordOld').val()},function(data){
+										if(data.info==="right"){
+											if($('#inputPasswordConfirmNew').val().length<6 || $('#inputPasswordNew').val() != $('#inputPasswordConfirmNew').val() ){
+												BootstrapDialog.alert({
+													type:BootstrapDialog.TYPE_DANGER,
+													title:'提示',
+													message:'修改失败，密码不足6位,或两次输入不一致,或包含空格。',
+													closeable:true,
+													buttonLabel:'确定'
+												});
+	      										}else{
+	      									//修改密码	
+												$.post('/index/index/editpas',{"id":id,"pas":$('#inputPasswordNew').val()},function(data){
+													if(data.info =="done"){
+														BootstrapDialog.alert({
+														type:BootstrapDialog.TYPE_SUCCESS,
+														title:'提示',
+														message:'修改成功。',
+														closeable:true,
+														buttonLabel:'确定'
+													});
+													dialogRef.close();
+													}else{
+														BootstrapDialog.alert({
+														type:BootstrapDialog.TYPE_DANGER,
+														title:'提示',
+														message:'修改失败。',
+														closeable:true,
+														buttonLabel:'确定'
+													});
+													dialogRef.close();
+													}
+												},'json');
+	      										
+	      										}
+
+
+										}else{
+											BootstrapDialog.alert({
+												type:BootstrapDialog.TYPE_DANGER,
+												title:'提示',
+												message:'修改失败，原密码输入错误。',
+												closeable:true,
+												buttonLabel:'确定'
+											});
+										}
+									},'json');
+								}
+							}]
+						});
+					}
+				}]
+			});
+		}
+
+
+		function changeOldPas(id){
+			$.post('/index/index/checkPas',{"id":id,"pas":$('#inputPasswordOld').val()},function(data){
+				if(data.info==="right"){
+					$('#inputPasswordOld').parent().next().children('.glyphicon-remove').addClass('hidden');
+					$('#inputPasswordOld').parent().next().children('.glyphicon-ok').removeClass('hidden');
+				}else{
+					$('#inputPasswordOld').parent().next().children('.glyphicon-remove').removeClass('hidden');
+					$('#inputPasswordOld').parent().next().children('.glyphicon-ok').addClass('hidden');
+				}
+			},'json');
+		}
+		
+		function changeNewPas(){
+			if($('#inputPasswordNew').val().length<6){
+				$('#inputPasswordNew').parent().next().children('.glyphicon-remove').removeClass('hidden');
+				$('#inputPasswordNew').parent().next().children('.glyphicon-ok').addClass('hidden');
+			}else{
+				$('#inputPasswordNew').parent().next().children('.glyphicon-remove').addClass('hidden');
+				$('#inputPasswordNew').parent().next().children('.glyphicon-ok').removeClass('hidden');
+	      		}
+		}
+
+	      	function changeConfirmNewPas(){
+			if($('#inputPasswordConfirmNew').val().length<6 || $('#inputPasswordNew').val() != $('#inputPasswordConfirmNew').val() ){
+				$('#inputPasswordConfirmNew').parent().next().children('.glyphicon-remove').removeClass('hidden');
+				$('#inputPasswordConfirmNew').parent().next().children('.glyphicon-ok').addClass('hidden');
+			}else{
+				$('#inputPasswordConfirmNew').parent().next().children('.glyphicon-remove').addClass('hidden');
+				$('#inputPasswordConfirmNew').parent().next().children('.glyphicon-ok').removeClass('hidden');
+	      		}
+	      	}
+
 	  </script>
 	</body>
 </html>
