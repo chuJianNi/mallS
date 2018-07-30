@@ -65,20 +65,43 @@ class Index
 		}
 	}
 
-	function checkPas()
+
+	function checkAndEditPas()
 	{
 		if(request()->isPost())
 		{
+			//记录log
 			trace('oldpasword: '.input('post.pas'),'debug');
 			trace('oldpaswordAfterMd5: '.md5(md5(input('post.pas'))),'debug');
 			$val=Db::table('goods_user')->where(['id'=>input('post.id'),'password'=>md5(md5(input('post.pas')))])->count();
 			if($val === 1){
-				return json(["info"=>"right"]);
+				$val=Db::table('goods_user')->where('id',input('post.id'))->update(['password'=>md5(md5(input('post.pasN')))]);
+				if($val === 1){
+					return json(["info"=>"done"]);
+				}else{
+					return json(["info"=>"error"]);
+				}
+
+			}else{
+				return json(["info"=>"opw"]);
+			}
+		}
+
+	}
+
+	function checkpas()
+	{
+		if(request()->isPost())
+		{
+			$val=Db::table('goods_user')->where(['id'=>input('post.id'),'password'=>md5(md5(input('post.pas')))])->count();
+			if($val === 1){
+				return json(["info"=>"have"]);
 			}else{
 				return json(["info"=>"error"]);
 			}
 		}
 	}
+
 
 	function getuser()
 	{
@@ -95,9 +118,11 @@ class Index
 	{
 		if(request()->isPost())
 		{
+			trace('try delete user in  table: goods_user ...','debug');
 			$res=input('post.user_id');
 			$val=Db::table('goods_user')->delete($res);
 			if($val === 1){
+				trace('primary id:'.$res.' is deleted in table:goods_user','debug');
 				return json(["info"=>"done"]);
 			}else{
 				return json(["info"=>"error"]);
@@ -131,18 +156,7 @@ class Index
 			}
 		}
 	}
-	function editpas()
-	{
-		if(request()->isPost())
-		{
-			$res=input('post.');
-			$val=Db::table('goods_user')->where('id',$res['id'])->update(['password'=>md5(md5($res['pas']))]);
-			if($val === 1){
-				return json(["info"=>"done"]);
-			}else{
-				return json(["info"=>"error"]);
-			}
-		}
-	}
+	
+
 }
 ?>
