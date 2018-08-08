@@ -1,74 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="/static/pic/favicon.ico">
-
-		<title>商城</title>
-
-		<!-- Bootstrap core CSS -->
-		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
-		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<link href="/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-		<!-- Custom styles for this template -->
-		<link href="/static/css/dashboard.css" rel="stylesheet">
-
-		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-		<script src="/assets/js/ie-emulation-modes-warning.js"></script>
-
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-			<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-			<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-		<!--datatables  CSS -->
-		<link href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet">
-	</head>
-
-	<body>
-
-		<nav class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#">商城管理</a>
-				</div>
-				<div id="navbar" class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">设置</a></li>
-						<li><a href="#">帮助</a></li>
-					</ul>
-					<form class="navbar-form navbar-right">
-						<input type="text" class="form-control" placeholder="查询...">
-					</form>
-				</div>
-			</div>
-		</nav>
-
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-3 col-md-2 sidebar">
-					<ul class="nav nav-sidebar">
-						<li class="active"><a href="/index/index/index">用户管理 <span class="sr-only">(current)</span></a></li>
-					</ul>
-					<ul class="nav nav-sidebar">
-						<li><a href="/index/index/goods">商品管理</a></li>
-					</ul>
-				</div>
+{include file="head.html" /}
+				<!--down is body -->
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 					<!-- Button trigger modal -->
@@ -181,111 +112,49 @@
 			</div>
 		</div>
 
-		<!-- Bootstrap core JavaScript
-	  ================================================== -->
-	  <!-- Placed at the end of the document so the pages load faster -->
-	  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-	  <script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery.min.js"><\/script>')</script>
-	  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	  <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	  <script src="/assets/js/vendor/holder.min.js"></script>
-	  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	  <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
-	  <!-- datatables js -->
-	  <script src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
-
+		{include file="script.html" /}
 	  <script>
 		  $('#addForm').submit(function(envent){
 			  envent.preventDefault();
-			  var userid=$('#inputAccount').val();
-			  var username=$('#inputUsername').val();
-			  var password=$('#inputPassword').val();
-			  var valid=$("input[name='optionsRadios']:checked").val();
-			  var markinfo=$('#inputMark').val();
-			  userid = $.trim(userid);
-			  username = $.trim(username);
-			  markinfo = $.trim(markinfo);
-			  //password = $.trim(password);
-			  if(userid == "" || username =="" || password == ""){
-				  dialogAlert({
-					"msg":"不允许输入空格字符串"
-				  });
-				  return;
-			  }
-			  if(hasSpecial(userid)){
-				  return;
-			  }else if(hasSpecial(username)){
-				  return;
-			  }else if(hasSpecial(markinfo)){
-				  return;
-			  }
-			  if($('#inputPassword').val() != $('#inputConfirmPas').val() || $('#inputPassword').val().length<6){
-				  dialogAlert({
-					"msg":"密码不一致,或密码长度不足6位"
-				  });
-				  return;
-			  }
-			  $.ajax({
-				  url:'/index/index/adduser',
-				  type:'post',
-				  dataType:'json',
-				  data:{'inputAccount':userid,'inputUsername':username,'inputPassword':password,'inputMark':markinfo,'optionsRadios':valid},
-				  beforeSend:function(){
+			  if($('#inputAccount').dataIO({"showErr":true,"required":true}) == -1){return;}
+			  if($('#inputUsername').dataIO({"showErr":true,"required":true}) == -1){return;}
+			  if($('#inputPassword').dataIO({"showErr":true,"type":'pwd'}) == -1){return;}
+			  if($('#inputConfirmPas').dataIO({"showErr":true,"type":'pwd',"pwdCfm":true}) == -1){return;}
+			  if($('#inputMark').dataIO({"showErr":true}) == -1){return;}
+			  $('#inputAccount').dataIO({
+				  "showErr":true,
+				  "type":'php',
+				  "where":{"username":$('#inputUsername').val()},
+				  "updates":{
+				  	"inputUsername":$('#inputUsername').val(),
+					"inputMark":$('#inputMark').val(),
+					"inputPassword":$('#inputPassword').val(),
+					"optionsRadios":$("input[name='optionsRadios']:checked").val()
 				  },
-				  error:function(){
-					  dialogAlert({
-						"msg":"erroe"
-					  });
-				  },
-				  complete:function(){
-					  //alert('complete');
-				  },
-				  success:function(data){
-					  dialogAlert({
-						"types":BootstrapDialog.TYPE_SUCCESS,
-						"msg":data.info
-					  });
-					  $('#myModal').modal('hide');
-					  table.ajax.reload();
-				  }
+				  "url":'/index/index/addUser'
 			  });
 		  });
 
-		$('#inputPassword').change(function(){
-	       	        setFlag('#inputPassword',$('#inputPassword').val().length>5);
+		$('#inputPassword').change(function($this){
+			$(this).dataIO({"type":'pwd'});
 		});
-		$('#inputConfirmPas').change(function(){
-	       	        setFlag('#inputConfirmPas',$('#inputConfirmPas').val().length>5 && $('#inputPassword').val() == $('#inputConfirmPas').val());
-		});
-
-
-		$('#inputUsername').change(function(){
-			if($.trim($('#inputUsername').val()) == ""){
-				$('#inputUsername').parent().next().children('.glyphicon').addClass('hidden');
-				return;
-			}
-			if(hasSpecial($('#inputUsername').val(),true)){ 
-				setFlag('#inputUsername',false);	
-				return;
-			}
-			$.post('/index/index/checkUsername',{"user_name":$.trim($('#inputUsername').val())},function(data){
-	   			setFlag('#inputUsername',data.info != "have");
-			},'json');
+		$('#inputConfirmPas').change(function($this){
+			$(this).dataIO({"type":'pwd',"pwdCfm":true});
 		});
 
-		$('#inputAccount').change(function(){
-			if($.trim($('#inputAccount').val()) == ""){
-				$('#inputAccount').parent().next().children('.glyphicon').addClass('hidden');
-				return;
-			}
-			if(hasSpecial($('#inputAccount').val(),true)){ 
-				setFlag('#inputAccount',false);	
-				return;
-			}
-			$.post('/index/index/checkUserid',{"user_id":$.trim($('#inputAccount').val())},function(data){
-	   			setFlag('#inputAccount',data.info != "have");
-			},'json');
+
+		$('#inputUsername').change(function($this){
+			if($(this).dataIO({"required":true}) == -1){return;}
+			$(this).dataIO({"type":'php',"url":'/index/index/checkUsername'});
+		});
+
+		$('#inputAccount').change(function($this){
+			if($(this).dataIO({"required":true}) == -1){return;}
+			$(this).dataIO({"type":'php',"url":'/index/index/checkUserid'});
+		});
+	
+		$('#inputMark').change(function($this){
+			$(this).dataIO({});
 		});
 
 		$('body').on('hidden.bs.modal','.modal',function(){
@@ -355,43 +224,20 @@
 		});
 
 		function del(id){
-			BootstrapDialog.show({
-				type:BootstrapDialog.TYPE_WARNING,
-				title:'提示',
-				message:'是否确认删除该用户？',
-				buttons:[
-					{
-						label:'关闭',
-						cssClass:'btn-default',
-						action:function(dialogRef){
-							dialogRef.close();
-						}
-					},
-					{
-					id:'btn-ok-d',
-				//	icon:'glyphicon glyphicon-check',
-					label:'确定',
-					cssClass:'btn-warning',
-					autospin:false,
-					action:function(dialogRef){
-						$.post('/index/index/deluser',{'user_id':id},function(data){
-							if(data.info =="done"){
-								dialogAlert({
-									"types":BootstrapDialog.TYPE_SUCCESS,
-									"msg":"删除成功"
-								});
-								dialogRef.close();
-								table.ajax.reload();
-							}else{
-								dialogAlert({
-									"msg":"删除失败"
-								});
-								dialogRef.close();
-								table.ajax.reload();
-							}
-						},'json');
+			$().dialogShow({
+				"type":BootstrapDialog.TYPE_WARNING,
+				"message":'是否确认删除该用户？',
+				"btnCssR":'btn btn-warning',
+				"btnAtnR": function(dialogRef){
+						$().dataIO({
+							"type":'php',
+							"showErr":true,
+							"where":{"user_id":id},
+							"url":'/index/index/delUser'							
+						});
+						table.ajax.reload();
+						dialogRef.close();
 					}
-				}]
 			});
 		}
 
@@ -405,38 +251,24 @@
 				marks=' <div class="form-group"><label for="inputMarkM" class="col-sm-2 control-label">备注信息</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputMarkM" name="inputMarkM" value="'+mark+'" placeholder="备注"> </div> <label class="col-sm-1 control-label">   </label> </div> '
 			}
 			var mainMsg= '<form class="form-horizontal" id="modifyForm" method="post"> <div class="form-group"> <label for="inputAccountM" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputAccountM" name="inputAccountM" value="'+userid+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputUsernameM" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputUsernameM" name="inputUsernameM" value="'+username+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div>'+marks+radios+' </form>';
-			dialogShow({
-				"titles":'信息修改',
-				"msg":mainMsg,
-				"actions2":function(shows){
-					dialogShow({
-						"types":BootstrapDialog.TYPE_WARNING,
-						"msg":'是否修改该用户信息？',
-						"btnsType2":'btn-warning',
-						"actions2":function(shows1){
+			$().dialogShow({
+				"title":'信息修改',
+				"message":mainMsg,
+				"btnAtnR":function(shows){
+					$().dialogShow({
+						"type":BootstrapDialog.TYPE_WARNING,
+						"message":'是否修改该用户信息？',
+						"btnCssR":'btn btn-warning',
+						"btnAtnR":function(shows1){
 							shows1.close();
-							if($.trim($('#inputMarkM').val()) == mark && $("input[name='optionsRadiosM']:checked").val() == valid){
-								dialogAlert({
-									"types":BootstrapDialog.TYPE_WARNING,
-									"msg":'没有修改操作。',
-								});
-								return;
-							}
-							if(hasSpecial($('#inputMarkM').val())){ return;}
-							$.post('/index/index/edituser',{"id":id,"inputMarkM":$('#inputMarkM').val(),"optionsRadiosM":$("input[name='optionsRadiosM']:checked").val()},function(data){
-								if(data.info =="done"){
-									dialogAlert({
-										"types":BootstrapDialog.TYPE_SUCCESS,
-										"msg":'修改成功。',
-									});
-									table.ajax.reload();
-									mark=$('#inputMarkM').val();
-									valid=$("input[name='optionsRadiosM']:checked").val();
-								}else{
-									dialogAlert({"msg":'修改失败'});
-									table.ajax.reload();
-								}
-							},'json');
+							if($('#inputMarkM').dataIO({"showErr":true}) == -1){return;}
+							$('#inputMarkM').dataIO({
+								"type":'php',
+								"showErr":true,
+								"where":{"id":id},
+								"updates":{"optionsRadiosM":$("input[name='optionsRadiosM']:checked").val()},
+								"url":'/index/index/editUser'
+							});
 						}
 					});
 				}
@@ -445,32 +277,25 @@
 
 		function modifyPas(id,userid,username){
 			var mainMsg='<form class="form-horizontal"  method="post"> <div class="form-group"> <label for="" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+userid+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+username+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputPasswordOld" class="col-sm-2 control-label">旧密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordOld" name="inputPasswordOld" value="" placeholder="旧密码" onchange="changeOldPas('+id+')" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="密码不正确"></span> </label> </div> <div class="form-group"> <label for="inputPasswordNew" class="col-sm-2 control-label">新密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordNew" name="inputPasswordNew" value="" placeholder="新密码" onchange="changeNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="密码不足6位,或密码包含空格"></span> </label> </div> <div class="form-group"> <label for="inputPasswordConfirmNew" class="col-sm-2 control-label">确认密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordConfirmNew" name="inputPasswordConfirmNew" value="" placeholder="确认密码" onchange="changeConfirmNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="与上次密码输入不一致"></span> </label> </div></form>';
-			dialogShow({
-				"titles":'密码修改',
-				"msg":mainMsg,
-				"actions2":function(show){
-					dialogShow({
-						"types":BootstrapDialog.TYPE_WARNING,
-						"msg":'是否修改密码',
-						"btnsType2":'btn-warning',
-						"actions2":function(show1){
+			$().dialogShow({
+				"title":'密码修改',
+				"message":mainMsg,
+				"btnAtnR":function(show){
+					$().dialogShow({
+						"type":BootstrapDialog.TYPE_WARNING,
+						"message":'是否修改密码',
+						"btnCssR":'btn btn-warning',
+						"btnAtnR":function(show1){
 							show1.close();
-							if($('#inputPasswordConfirmNew').val().length<6 || $('#inputPasswordOld').val().length<6 || $('#inputPasswordNew').val() != $('#inputPasswordConfirmNew').val() ){
-								dialogAlert({"msg":'修改失败，密码不足6位,或两次输入不一致,或包含空格。'});
-								return;
-							}
-							$.post('/index/index/checkAndEditPas',{"id":id,"pas":$('#inputPasswordOld').val(),"pasN":$('#inputPasswordNew').val()},function(data){
-								if(data.info==="opw"){
-									dialogAlert({"msg":'原密码验证不正确'});
-								}else if(data.info === "done"){
-									dialogAlert({
-										"types":BootstrapDialog.TYPE_SUCCESS,
-										"msg":'修改成功'
-									});
-								}else{
-									dialogAlert({"msg":'修改失败'});
-								}
-							},'json');
+							if($('#inputPasswordOld').dataIO({"type":'pwd',"showErr":true}) == -1){return;}
+							if($('#inputPasswordNew').dataIO({"type":'pwd',"showErr":true}) == -1){return;}
+							if($('#inputPasswordConfirmNew').dataIO({"type":'pwd',"showErr":true,"pwdCfm":true}) == -1){return;}
+							$('#inputPasswordNew').dataIO({
+								"type":'php',
+								"url":'/index/index/checkAndEditPas',
+								"showErr":true,
+								"where":{"id":id,"pwdOld":$('#inputPasswordOld').val()}
+							});
 						}
 					});
 				}
@@ -479,99 +304,19 @@
 
 
 		function changeOldPas(id){
-			if($('#inputPasswordOld').val().length <6){
-				setFlag('#inputPasswordOld',false); return;
-			}
-			$.post('/index/index/checkPas',{"id":id,"pas":$('#inputPasswordOld').val()},function(data){
-				setFlag('#inputPasswordOld',data.info==="have"); 
-			},'json');
+			if($('#inputPasswordOld').dataIO({"type":'pwd'}) == -1){return;}
+			$('#inputPasswordOld').dataIO({"type":'php',"where":{"id":id},"url":'/index/index/checkPas'});
 		}
 		
 		function changeNewPas(){
-			setFlag('#inputPasswordNew',$('#inputPasswordNew').val().length > 5);
+			$('#inputPasswordNew').dataIO({"type":'pwd'});
 		}
 
 	      	function changeConfirmNewPas(){
-			setFlag('#inputPasswordConfirmNew',$('#inputPasswordConfirmNew').val().length >5 && $('#inputPasswordNew').val() == $('#inputPasswordConfirmNew').val());
+			$('#inputPasswordConfirmNew').dataIO({"type":'pwd',"pwdCfm":true});
 	      	}
 
-		function hasSpecial(args)
-	        {
-		   	var flag =arguments[1]?arguments[1]:false;
-			re=/select|update|delete|exec|count|'|"|=|;|>|<|%/i;
-			if(re.test($.trim(args))){
-		   		if(flag){
-		   			return true;
-		   		}
-				BootstrapDialog.alert({
-					type:BootstrapDialog.TYPE_WARNING,
-					title:'提示',
-					message:'请不要包含特殊字符。',
-					closeable:true,
-					buttonLabel:'确定'
-				});
-				//table.ajax.reload();
-				return true;
-			}
-		   	return false;
-		}   
-
-
-      	        function setFlag(argName,argFlag){
-		   	if(argFlag){
-				$(argName).parent().next().children('.glyphicon-remove').addClass('hidden');
-				$(argName).parent().next().children('.glyphicon-ok').removeClass('hidden');
-		   	}
-		   	else{
-				$(argName).parent().next().children('.glyphicon-ok').addClass('hidden');
-				$(argName).parent().next().children('.glyphicon-remove').removeClass('hidden');
-		   	}
-	        }
-
-
-		function dialogAlert(args){
-			args.titles = args.titles?args.titles:'提示';
-		   	args.btns = args.btns?args.btns:'确定';
-		   	args.types= args.types?args.types:BootstrapDialog.TYPE_DANGER;
-		   	args.msg= args.msg?args.msg:'错误';
-			BootstrapDialog.alert({
-				type:args.types,
-				title:args.titles,
-				message:args.msg,
-				closeable:true,
-				buttonLabel:args.btns
-			});
-		}
 							
-		function dialogShow(args){
-		   	args.types= args.types?args.types:BootstrapDialog.TYPE_INFO;
-			args.titles = args.titles?args.titles:'提示';
-		   	args.msg = args.msg?args.msg:'...';
-		   	args.btns1 = args.btns1?args.btns1:'关闭';
-		   	args.btns2 = args.btns2?args.btns2:'确定';
-		   	args.btnsType1 = args.btnsType1?args.btnsType1:'btn-defailt';
-		   	args.btnsType2 = args.btnsType2?args.btnsType2:'btn-info';
-		   	args.actions2 = args.actions2?args.actions2:function(dialogRef){};
-			BootstrapDialog.show({
-				type:args.types,
-				title:args.titles,
-				message:args.msg,
-				buttons:[
-					{
-						label:args.btns1,
-						cssClass:args.btnsType1,
-						action:function(dialogRef){
-							dialogRef.close();
-						}
-					},
-					{
-						label:args.btns2,
-						cssClass:args.btnsType2,
-						autospin:false,
-						action:args.actions2
-		   			}]
-			});
-		}
 	  </script>
 	</body>
 </html>
