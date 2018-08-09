@@ -226,18 +226,9 @@
 		}
 
 		function modify(id,userid,username,mark,valid){
-			var radios=' <div class="form-group"> <label for="" class="col-sm-2 control-label">用户状态</label> <div class="col-sm-10"> <div class="radio"> <label> <input type="radio" name="optionsRadiosM" value="1" checked> 启用 </label> <label> <input type="radio" name="optionsRadiosM" value="2"> 禁用 </label> </div> </div> </div>';
-			if(valid =="2"){
-				radios=' <div class="form-group"> <label for="" class="col-sm-2 control-label">用户状态</label> <div class="col-sm-10"> <div class="radio"> <label> <input type="radio" name="optionsRadiosM" value="1" > 启用 </label> <label> <input type="radio" name="optionsRadiosM" value="2" checked> 禁用 </label> </div> </div> </div>';
-			}
-			var marks=' <div class="form-group"><label for="inputMarkM" class="col-sm-2 control-label">备注信息</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputMarkM" name="inputMarkM" value="" placeholder="备注"> </div> <label class="col-sm-1 control-label">   </label> </div> '
-			if(mark != null){
-				marks=' <div class="form-group"><label for="inputMarkM" class="col-sm-2 control-label">备注信息</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputMarkM" name="inputMarkM" value="'+mark+'" placeholder="备注"> </div> <label class="col-sm-1 control-label">   </label> </div> '
-			}
-			var mainMsg= '<form class="form-horizontal" id="modifyForm" method="post"> <div class="form-group"> <label for="inputAccountM" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputAccountM" name="inputAccountM" value="'+userid+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputUsernameM" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control" id="inputUsernameM" name="inputUsernameM" value="'+username+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div>'+marks+radios+' </form>';
 			$().dialogShow({
 				"title":'信息修改',
-				"message":mainMsg,
+				"message":$('<div></div>').load('/index/index/mInfo?arg='+[id,userid,username,mark,valid]),
 				"btnAtnR":function(shows){
 					$().dialogShow({
 						"type":BootstrapDialog.TYPE_WARNING,
@@ -260,10 +251,10 @@
 		}
 
 		function modifyPas(id,userid,username){
-			var mainMsg='<form class="form-horizontal"  method="post"> <div class="form-group"> <label for="" class="col-sm-2 control-label">账号</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+userid+'" placeholder="账号" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="" class="col-sm-2 control-label">用户名</label> <div class="col-sm-9"> <input type="text" class="form-control"  value="'+username+'" placeholder="用户名" disabled="disabled" required> </div> <label class="col-sm-1 control-label">   </label> </div> <div class="form-group"> <label for="inputPasswordOld" class="col-sm-2 control-label">旧密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordOld" name="inputPasswordOld" value="" placeholder="旧密码" onchange="changeOldPas('+id+')" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="密码不正确"></span> </label> </div> <div class="form-group"> <label for="inputPasswordNew" class="col-sm-2 control-label">新密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordNew" name="inputPasswordNew" value="" placeholder="新密码" onchange="changeNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="密码不足6位,或密码包含空格"></span> </label> </div> <div class="form-group"> <label for="inputPasswordConfirmNew" class="col-sm-2 control-label">确认密码</label> <div class="col-sm-9"> <input type="password" class="form-control" id="inputPasswordConfirmNew" name="inputPasswordConfirmNew" value="" placeholder="确认密码" onchange="changeConfirmNewPas()" required > </div> <label class="col-sm-1 control-label">  <span class="glyphicon glyphicon-ok text-success hidden" aria-hidden="true"></span> <span class="glyphicon glyphicon-remove text-danger hidden" aria-hidden="true" title="与上次密码输入不一致"></span> </label> </div></form>';
+
 			$().dialogShow({
 				"title":'密码修改',
-				"message":mainMsg,
+				"message":$('<div></div>').load('/index/index/mPwd?arg='+[id,userid,username]),
 				"btnAtnR":function(show){
 					$().dialogShow({
 						"type":BootstrapDialog.TYPE_WARNING,

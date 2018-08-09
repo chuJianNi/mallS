@@ -193,6 +193,18 @@ class Index
 		}
 	}
 	
+	function mPwd()
+	{
+		$arg=$_GET['arg'];
+		$arg=explode(",",$arg);
+		return view('mPwd',['args'=>$arg]);
+	}
 
+	function mInfo()
+	{
+		$arg=$_GET['arg'];
+		$arg=explode(",",$arg);
+		return view('mInfo',['args'=>$arg]);
+	}
 }
 ?>
